@@ -70,3 +70,10 @@ Route::post('/agregarRegion', function ()
     return redirect('/adminRegiones')
                 ->with( [ 'mensaje'=>'Región: '.$regNombre.' agregada correctamente' ] );
 });
+
+Route::get('adminDestinos', function () {
+    $destinos = DB::select('SELECT * FROM destinos d
+         JOIN regiones r ON d.regID = r.regID');
+         
+    return view('adminDestinos' , ['destinos' => $destinos]);
+});
