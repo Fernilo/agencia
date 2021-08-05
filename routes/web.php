@@ -77,3 +77,30 @@ Route::get('adminDestinos', function () {
          
     return view('adminDestinos' , ['destinos' => $destinos]);
 });
+
+Route::get('agregarDestino', function () {
+    return view('agregarDestino');
+});
+
+Route::post('agregarDestino', function () {
+     //capturar dato enviado
+     $destNombre = $_POST['destNombre'];
+     $destPrecio = $_POST['destPrecio'];
+     $destAsientos = $_POST['destAsientos'];
+     $destDisponibles = $_POST['destDisponibles'];
+     $destActivo = $_POST['destActivo'];
+     $regID = $_POST['regID'];
+
+
+     //insertar en tabla destinos
+     DB::insert('
+                 INSERT INTO destinos
+                             ( destNombre,regId,destPrecio,destAsientos,destDisponibles,destActivo )
+                         VALUE
+                             ( :destNombre,:regId,:destPrecio,:destAsientos,:destDisponibles,:destActivo )',
+                             [ $destNombre,$regID,$destPrecio,$destAsientos,$destDisponibles,$destActivo ]
+                 );
+     //redirección con mensaje ok (flashing)
+     return redirect('/adminDestinos')
+                 ->with( [ 'mensaje'=>'Destino: '.$destNombre.' agregado correctamente' ] );
+});
