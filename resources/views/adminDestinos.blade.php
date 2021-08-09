@@ -28,25 +28,25 @@
         </thead>
         <tbody>
         @foreach( $destinos as $destino )
-                <tr>
-                    <td>{{ $destino->destID }}</td>
-                    <td>{{ $destino->destNombre }}</td>
-                    <td>{{$destino->regNombre}}</td>
-                    <td>{{ $destino->destPrecio }}</td>
-                    <td>{{ $destino->destAsientos }}</td>
-                    <td>{{ $destino->destDisponibles }}</td>
-                    <td>{{ $destino->destActivo? 'Sí' : 'No' }}</td>
-                    <td>
-                        <a href="/modificarRegion/{{ $destino->destID }}" class="btn btn-outline-secondary">
-                            Modificar
-                        </a>
-                    </td>
-                    <td>
-                        <a href="/eliminarRegion/{{ $destino->destID }}" class="btn btn-outline-secondary">
-                            Eliminar
-                        </a>
-                    </td>
-                </tr>
+            <tr>
+                <td>{{ $destino->destID }}</td>
+                <td>{{ $destino->destNombre }}</td>
+                <td>{{$destino->regNombre}}</td>
+                <td>${{ $destino->destPrecio }}</td>
+                <td>{{ $destino->destAsientos }}</td>
+                <td>{{ $destino->destDisponibles }}</td>
+                <td>{{ $destino->destActivo? 'Sí' : 'No' }}</td>
+                <td>
+                    <a href="/modificarDestino/{{ $destino->destID }}" class="btn btn-outline-secondary">
+                        Modificar
+                    </a>
+                </td>
+                <td>
+                    <a href="/eliminarDestino/{{ $destino->destID }}" class="btn btn-outline-secondary">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
         @endforeach
         </tbody>
     </table>

@@ -71,7 +71,7 @@ Route::post('/agregarRegion', function ()
                 ->with( [ 'mensaje'=>'Región: '.$regNombre.' agregada correctamente' ] );
 });
 
-Route::get('adminDestinos', function () {
+Route::get('adminDestinos', function () {//Esta peticion se hace desde el boton en index y es get porque es solo para pedir data
     $destinos = DB::select('SELECT * FROM destinos d
          JOIN regiones r ON d.regID = r.regID');
          
@@ -80,6 +80,12 @@ Route::get('adminDestinos', function () {
 
 Route::get('agregarDestino', function () {
     return view('agregarDestino');
+});
+
+Route::get('modificarRegion/{id}', function ($id) {
+    $region = DB::select('SELECT regID,regNombre FROM regiones WHERE regID = :id',[ $id ]);
+
+    return view('modificarRegion',['region' => $region]);
 });
 
 Route::post('agregarDestino', function () {
@@ -103,4 +109,32 @@ Route::post('agregarDestino', function () {
      //redirección con mensaje ok (flashing)
      return redirect('/adminDestinos')
                  ->with( [ 'mensaje'=>'Destino: '.$destNombre.' agregado correctamente' ] );
+});
+
+Route::get("modificarDestino/{id}" , function ($id) {
+    $regiones = DB::table('regiones')->get();
+
+    $destino = DB::table('destinos')
+            ->where('destID' , $id)
+            ->join('regiones','destinos.regID' , '=' , 'regiones.regID')
+            ->select('destinos.*' , 'regiones.regNombre as regionNombre' )
+            ->first();
+
+    return view('modificarDestino' , ['destino' => $destino, 'regiones' => $regiones]);
+});
+
+Route::patch("modificarDestino" , function() {
+    $destID = $_POST['destID'];
+    $regID = $_POST['regID'];
+    $destNombre = $_POST['destNombre'];
+    $destPrecio = $_POST['destPrecio'];
+    $destAsientos = $_POST['destAsientos'];
+    $destDisponibes = $_POST['destDisponibes'];    
+    $destActivo = $_POST['destActivo'];
+
+    DB::table('destinos')->where('destID' , $destID)->update(['destNombre' => $destNombre , 'destPrecio' => $destPrecio , 'regID' => $regID , 
+        'destAsientos' => $destAsientos , 'destDisponibles' => $destDisponibes , 'destActivo' => $destActivo]);
+
+    return redirect('adminDestinos')
+        ->with(['mensaje' => 'Destino: '.$destNombre.' modificado correctamente']);
 });
