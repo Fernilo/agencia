@@ -138,3 +138,22 @@ Route::patch("modificarDestino" , function() {
     return redirect('adminDestinos')
         ->with(['mensaje' => 'Destino: '.$destNombre.' modificado correctamente']);
 });
+
+Route::get('eliminarDestino/{id}', function ($id) {
+    $destino = DB::table('destinos')
+                ->where('destID' , $id)
+                ->first();
+
+    return view('eliminarDestino', ['destino' => $destino]);
+});
+
+Route::delete('eliminarDestino/', function () {
+    $destNombre = $_POST['destNombre'];
+    $destID = $_POST['destID'];
+
+    DB::table('destinos')->where('destID' , $destID)->delete();
+
+    return redirect('/adminDestinos')
+        ->with( [ 'mensaje'=>'Destino: '.$destNombre.' eliminado correctamente' ] );
+
+});
