@@ -10,6 +10,7 @@
             @method('patch')
             @csrf
                 Región: <br>
+                <input type="hidden" name="regID" value="{{ $region[0]->regID }}">
                 <input type="text" name="regNombre" class="form-control" value="{{ $region[0]->regNombre }}">
                 <br>
                 <button class="btn btn-dark">Modificar</button>

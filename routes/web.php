@@ -88,6 +88,34 @@ Route::get('modificarRegion/{id}', function ($id) {
     return view('modificarRegion',['region' => $region]);
 });
 
+Route::patch('modificarRegion' , function() {
+    $regID = $_POST['regID'];
+    $regNombre = $_POST['regNombre'];
+
+    DB::table('regiones')->where('regID' , $regID)->update(['regNombre' => $regNombre]);
+
+    return redirect('adminRegiones')
+        ->with(['mensaje' => 'Región: '.$regNombre.' modificada correctamente']);
+});
+
+Route::get('eliminarRegion/{id}' , function($id){
+    $region = DB::table('regiones')
+        ->where('regID' , $id)
+        ->first();
+
+    return view('eliminarRegion' , ['region' => $region]);
+});
+
+Route::delete('eliminarRegion' , function() {
+    $regNombre = $_POST['regNombre'];
+    $regID = $_POST['regID'];
+
+    DB::table('regiones')->where('regID' , $regID)->delete();
+
+    return redirect('adminRegiones')
+        ->with(['mensaje' => 'Región: '.$regNombre.' eliminada correctamente']);
+});
+
 Route::post('agregarDestino', function () {
      //capturar dato enviado
      $destNombre = $_POST['destNombre'];
